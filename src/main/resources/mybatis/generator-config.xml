@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <context id="mysql" targetRuntime="MyBatis3Simple" defaultModelType="flat"><!-- targetRuntime=MyBatis3Simple or MyBatis3 -->
+        <property name="javaFileEncoding" value="UTF-8" />
+        <!-- <plugin type="org.mybatis.generator.plugins.CachePlugin"></plugin> -->
+        <!--<plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin"></plugin> -->
+        <!--<plugin type="org.mybatis.generator.plugins.ToStringPlugin"></plugin> -->
+        <plugin type="tk.mybatis.mapper.generator.MapperPlugin">
+            <property name="mappers" value="tk.mybatis.mapper.common.Mapper" />
+            <property name="caseSensitive" value="true" />
+        </plugin>
+
+        <!--optional,旨在创建class时，对注释进行控制-->
+        <commentGenerator>
+            <!-- 是否去掉去掉自动生成的日期注释  true：是 ： false:否 -->
+            <property name="suppressDate" value="true"/>
+            <!--  是否去除所有自动生成的注释 true：是 ： false:否  -->
+            <property name="suppressAllComments" value="true" />
+        </commentGenerator>
+
+        <!--jdbc的数据库连接 -->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://127.0.0.1:3306/demo?characterEncoding=utf8" userId="root" password="123456" />
+
+
+        <!-- 是否强制转换 只有forceBigDecimals 一个属性 -->
+        <javaTypeResolver>
+            <!-- 根据数据库字段长度制动匹配，默认为false：bigdecimal,long,int,short ,为true时始终使用bigdecimal-->
+            <property name="forceBigDecimals" value="false" />
+        </javaTypeResolver>
+
+
+        <!-- java bean -->
+        <javaModelGenerator targetPackage="com.example.springboot.pojo" targetProject="src/main/java">
+            <!-- 是否允许子包 -->
+            <property name="enableSubPackages" value="false" />
+            <!-- 是否对modal添加构造函数 -->
+            <property name="constructorBased" value="false" />
+            <!-- 是否清理从数据库中查询出的字符串左右两边的空白字符 -->
+            <property name="trimStrings" value="true" />
+            <!-- 建立modal对象是否不可改变 即生成的modal对象不会有setter方法，只有构造方法 -->
+            <property name="immutable" value="false" />
+        </javaModelGenerator>
+
+        <!-- sqlmap xml -->
+        <sqlMapGenerator targetPackage="mappers" targetProject="src/main/resources">
+            <property name="enableSubPackages" value="false" />
+        </sqlMapGenerator>
+
+        <!-- sqlmap Interface -->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.example.springboot.mappers" targetProject="src/main/java">
+            <property name="enableSubPackages" value="true" />
+        </javaClientGenerator>
+
+        <!-- 要生成的表，可以有多个 -->
+        <table tableName="student"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+            <!-- 生成主键，自增 -->
+            <generatedKey column="id" sqlStatement="JDBC" />
+        </table>
+    </context>
+</generatorConfiguration>
