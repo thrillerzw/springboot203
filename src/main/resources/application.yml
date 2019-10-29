@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 8082
 debug: false
 spring:
   jackson:
@@ -19,7 +19,9 @@ spring:
       initial-size: 5
       validation-query: SELECT 1
       connection-properties: characterEncoding=utf8
-
+  #spring session
+  #session:
+    #store-type: redis
 # PageHelper分页插件
 # PageHelper.startPage(pageNum, pageSize);
 pagehelper:
@@ -33,4 +35,6 @@ mybatis:
   config-location: classpath:mybatis/mybatis-config.xml
   mapper-locations: classpath:mappers/*.xml
   type-aliases-package: com.example.springboot.pojo
+
+
 

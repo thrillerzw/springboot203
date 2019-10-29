@@ -1,0 +1,17 @@
+# Created by .ignore support plugin (hsz.mobi)
+.gitignore
+.idea/$CACHE_FILE$
+.idea/$PRODUCT_WORKSPACE_FILE$
+.idea/.gitignore
+.idea/.name
+.idea/compiler.xml
+.idea/dictionaries
+.idea/encodings.xml
+.idea/inspectionProfiles/
+.idea/libraries/
+.idea/misc.xml
+.idea/modules.xml
+.idea/smartfox_info.xml
+.idea/vcs.xml
+springboot.iml
+target/
