@@ -3,17 +3,22 @@ package com.example.springboot.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJacksonValue;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * http://127.0.0.1:8082/getjsonp?callback=mycall
  * mycal为前端定义的js函数
  */
 @Slf4j
-@Controller
-public class JsonpCrontroller {
+@RestController
+public class CorsCrontroller {
+
+    //指定接口配置，全局接口配置看WebMvcConfig implements WebMvcConfigurer
+    @CrossOrigin(value = "http://localhost:8083")
+    @GetMapping(value = "/getcors")
+    public String getCors(){
+        return "cors";
+    }
 
     @RequestMapping(value = "/getjsonp" ,produces = MediaType.APPLICATION_JSON_VALUE+";charset=utf-8")
     @ResponseBody
@@ -30,4 +35,6 @@ public class JsonpCrontroller {
         mappingJacksonValue.setJsonpFunction(callback);
         return mappingJacksonValue;
     }
+
+
 }

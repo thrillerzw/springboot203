@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>cors</title>
+</head>
+<body>
+<div id="data"></div>
+<input type="button" onclick="btnClick()" value="跨域获取数据">
+<script>
+    function btnClick() {
+        $.get('http://localhost:8082/getcors', function (msg) {
+            $("#data").html(msg);
+        });
+    }
+</script>
+<script src="http://libs.baidu.com/jquery/1.9.1/jquery.js"></script>
+</body>
+</html>
