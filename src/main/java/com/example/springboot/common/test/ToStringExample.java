@@ -17,6 +17,8 @@ public class ToStringExample {
     @ToString.Exclude
     private int id;
 
+    /*ToStringExample(name=tom)
+    Child(super=ToStringExample(name=tom), age=20)*/
     public static void main(String[] args) {
         System.out.println(new ToStringExample());
         System.out.println(new Child());
