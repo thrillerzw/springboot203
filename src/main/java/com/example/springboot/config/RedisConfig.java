@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,9 +23,10 @@ import java.util.Set;
 
 
 @Configuration
-public class redisConfig {
+public class RedisConfig {
 
     @Bean
+    @Qualifier("lettuceConnectionFactory")
     public CacheManager cacheManager(RedisConnectionFactory redisConnectionFactory) {
         //设置CacheManager的值序列化方式为json序列化
         Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer(Object.class);

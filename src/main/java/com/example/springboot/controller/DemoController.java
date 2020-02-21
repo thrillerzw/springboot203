@@ -29,15 +29,15 @@ public class DemoController {
     StringRedisTemplate stringRedisTemplate;
     //,condition = "#mobileNo.length()==11",unless = "#result == null"
     @RequestMapping("/getdemo")
-    //@Cacheable(value="owm_uc",key="#mobileNo",unless = "#result == null")
+    //@Cacheable(value="demo_uc",key="#mobileNo",unless = "#result == null")
     public UserResp getDemo(@RequestParam String mobileNo, HttpServletRequest httpServletRequest){
         System.out.println("start getdemo()===================");
         redisTemplate.opsForValue().set("demo","getdemo");
         String str=(String)redisTemplate.opsForValue().get("demo");
         stringRedisTemplate.opsForValue().set("str","str");
         String str2=stringRedisTemplate.opsForValue().get("str");
-        String owm_uc=stringRedisTemplate.opsForValue().get("owm_uc::13266660000");
-        System.out.println(owm_uc);
+        String demo_uc=stringRedisTemplate.opsForValue().get("demo_uc::13266660000");
+        System.out.println(demo_uc);
         UserResp userResp= new UserResp();
         userResp.setId(1L);
         userResp.setName("张三san");
