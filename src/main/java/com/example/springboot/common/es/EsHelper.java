@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+//临时注释掉,使用时候放开注释。
 //@Component
 public class EsHelper {
     private static Logger logger= LoggerFactory.getLogger(EsHelper.class);
