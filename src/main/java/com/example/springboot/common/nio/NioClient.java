@@ -7,14 +7,15 @@ import java.nio.channels.SocketChannel;
 public class NioClient {
 
     public static void main(String[] args) throws Exception{
-        SocketChannel socketChannel = SocketChannel.open();
+        SocketChannel socketChannel=SocketChannel.open(new InetSocketAddress("127.0.0.1", 9000));
         socketChannel.configureBlocking(false);
-        boolean connSuccess = socketChannel.connect(new InetSocketAddress("127.0.0.1", 9000));
+     /*   boolean connSuccess = socketChannel.connect(new InetSocketAddress("127.0.0.1", 9000));
         if (!connSuccess){
+//            如果connect连接失败了，就要通过finishConnect完成连接操作
             while (!socketChannel.finishConnect()){
                 System.out.println("连接需要时间，但不会阻塞。一直等着连接成功");
             }
-        }
+        }*/
         String msg="hello";
         ByteBuffer byteBuffer = ByteBuffer.wrap(msg.getBytes());
         socketChannel.write(byteBuffer);

@@ -16,7 +16,8 @@ public class NioServer {
         serverSocketChannel.socket().bind(new InetSocketAddress(9000));
         serverSocketChannel.configureBlocking(false);//设置为非阻塞
         Selector selector = Selector.open();
-        serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
+        //服务端也需要注册
+        SelectionKey selectionKey1 = serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
         while (true){
             if(selector.select(1000) == 0){//==0表示没有事件，>0 表示有事件
                 System.out.println("NioServer no event");
@@ -34,6 +35,7 @@ public class NioServer {
                 }
                 if (selectionKey.isReadable()){//OP_READ
                     SocketChannel socketChannel = (SocketChannel)selectionKey.channel();
+                    //得到注册时候的bufer  ByteBuffer.allocate(1024)
                     ByteBuffer byteBuffer = (ByteBuffer) selectionKey.attachment();
                     socketChannel.read(byteBuffer);
                     System.out.println("from client "+new String(byteBuffer.array(),"utf-8"));
