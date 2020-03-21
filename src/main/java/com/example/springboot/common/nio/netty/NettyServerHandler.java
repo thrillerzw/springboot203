@@ -1,5 +1,7 @@
 package com.example.springboot.common.nio.netty;
 
+import java.util.concurrent.TimeUnit;
+
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
@@ -19,6 +21,29 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
         //writeAndFlush将数据写入缓存并刷新
         ctx.writeAndFlush(Unpooled.copiedBuffer("i am server",CharsetUtil.UTF_8));
+
+        //自定义普通任务，加入taskQueue队列
+        ctx.channel().eventLoop().execute(new Runnable() {
+
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(5*1000);
+                    ctx.writeAndFlush(Unpooled.copiedBuffer("i am server normal task",CharsetUtil.UTF_8));
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        //自定义定时任务，加入scheduledTaskQueue队列
+        ctx.channel().eventLoop().scheduleAtFixedRate(new Runnable() {
+
+            @Override
+            public void run() {
+                ctx.writeAndFlush(Unpooled.copiedBuffer("i am server schedule task",CharsetUtil.UTF_8));
+            }
+        },0,10, TimeUnit.SECONDS);//每隔10秒执行，客户端会不断收到消息
+
     }
     //异常关闭通道
     @Override

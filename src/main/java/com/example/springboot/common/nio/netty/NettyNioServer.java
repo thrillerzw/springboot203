@@ -8,6 +8,8 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.util.concurrent.Future;
+import io.netty.util.concurrent.GenericFutureListener;
 
 /*<dependency>
 <groupId>io.netty</groupId>
@@ -35,11 +37,23 @@ public class NettyNioServer {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
                             ch.pipeline().addLast(new NettyServerHandler());
+                            //消息推送，可以使用集合把SocketChannel管理起来，可以用普通任务异步处理。
                         }
                     });
             System.out.println("netty server ok");
-//            绑定端口，同步生成ChannelFuture
-            ChannelFuture channelFuture = serverBootstrap.bind(9500).sync();
+//            绑定端口
+//           ChannelFuture channelFuture = serverBootstrap.bind(9500).sync();
+            ChannelFuture channelFuture = serverBootstrap.bind(9500).addListener(new GenericFutureListener(){
+
+                @Override
+                public void operationComplete(Future future) throws Exception {
+                    if(future.isSuccess()){
+                        System.out.println("bind success");
+                    }else{
+                        System.out.println("bind fail");
+                    }
+                }
+            });
 //            对关闭通道进行监听
             channelFuture.channel().closeFuture().sync();
         }catch (Exception e){
