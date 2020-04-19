@@ -1,0 +1,15 @@
+create table example (
+    id bigint primary key  auto_increment comment '自增主键id',
+    status smallint  default 0 comment '状态，0：待发送，1：发送成功，2：发送失败',
+    message_content varchar(2000) default '' comment '发送到mq的消息体内容，json格式',
+    retry_times smallint default 0 comment '重试次数，最多重试5次',
+    amount decimal(13,2) default 0.00,
+    create_time datetime not null,
+    update_time datetime not null
+)comment='example';
+
+create table student (
+    id bigint primary key  auto_increment comment '自增主键id',
+    name varchar(20)  default '' comment '名字',
+    stu_no varchar(20) default '' comment '学号'
+)comment='student';
