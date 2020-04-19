@@ -32,7 +32,7 @@ public class CorsCrontroller {
 
         //第二种方式,Will be removed as of Spring Framework 5.1,让使用CORS
        MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(data);
-        mappingJacksonValue.setJsonpFunction(callback);
+//        mappingJacksonValue.setJsonpFunction(callback);
         return mappingJacksonValue;
     }
 
