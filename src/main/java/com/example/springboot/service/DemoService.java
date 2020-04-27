@@ -1,6 +1,13 @@
 package com.example.springboot.service;
 
+import com.example.springboot.api.ApiResult;
+import com.example.springboot.api.req.QueryExampleReq;
+import com.example.springboot.api.res.QueryExampleRes;
+
 public interface DemoService {
-    public void transactionalService();
+    void transactionalService();
+
     void print();
+
+    ApiResult<QueryExampleRes> queryExample(QueryExampleReq queryExampleReq);
 }

@@ -1,9 +1,13 @@
 package com.example.springboot.service.impl;
 
+import com.example.springboot.api.ApiResult;
+import com.example.springboot.api.req.QueryExampleReq;
+import com.example.springboot.api.res.QueryExampleRes;
 import com.example.springboot.mappers.ExampleMapper;
 import com.example.springboot.mappers.StudentMapper;
 import com.example.springboot.pojo.Example;
 import com.example.springboot.service.DemoService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,5 +37,13 @@ public class DemoServiceImpl implements DemoService {
     @Override
     public void print() {
         System.out.println("DemoServiceImpl print()");
+    }
+
+    @Override
+    public ApiResult<QueryExampleRes> queryExample(QueryExampleReq queryExampleReq) {
+        Example example = exampleMapper.selectByPrimaryKey(queryExampleReq.getId());
+        QueryExampleRes queryExampleRes=new QueryExampleRes();
+        BeanUtils.copyProperties(example,queryExampleRes);
+        return ApiResult.createSuccDataResult(queryExampleRes);
     }
 }
