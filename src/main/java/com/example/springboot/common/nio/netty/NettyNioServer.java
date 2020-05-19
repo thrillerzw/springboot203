@@ -1,5 +1,7 @@
 package com.example.springboot.common.nio.netty;
 
+import java.util.concurrent.TimeUnit;
+
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -8,6 +10,7 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 
@@ -32,14 +35,38 @@ public class NettyNioServer {
             serverBootstrap.group(bossGroup,workerGroup)
                     .channel(NioServerSocketChannel.class)
                     .option(ChannelOption.SO_BACKLOG,128)
-                    .childHandler(new ChannelInitializer<SocketChannel>() {//设置handler
+                    .option(ChannelOption.SO_KEEPALIVE,true)
+                    .childHandler(new ChannelInitializer<SocketChannel>() {//设置workerGroup handler
 
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
                             ch.pipeline().addLast(new NettyServerHandler());
                             //消息推送，可以使用集合把SocketChannel管理起来，可以用普通任务异步处理。
+
+                            //------心跳检测---------。readerIdleTime 多久没有读,  writerIdleTime多久没有写, long allIdleTime多久没有读写
+//当IdleStateEvent触发后，就会传递给管道的下一个handler的userEventTriggered(ChannelHandlerContext ctx, Object evt) 方法处理
+                            ch.pipeline().addLast(new IdleStateHandler(5,10,15, TimeUnit.SECONDS));
+//自定义处理心跳的handler，重写userEventTriggered方法，evt判断类型后强转为IdleStateEvent类型，通过参数IdleState state判断事件类型
+//                            ch.pipeline().addLast(xx);
                         }
                     });
+                   /* .childHandler(new ChannelInitializer<SocketChannel>() {//设置workerGroup handler
+                        @Override
+                        protected void initChannel(SocketChannel ch) throws Exception {
+                            ChannelPipeline pipeline = ch.pipeline();
+                            //websocket长连接
+                            //基于http协议，使用http的编码解码
+                            pipeline.addLast(new HttpServerCodec());
+                            //以块的方式写
+                            pipeline.addLast(new ChunkedWriteHandler());
+                            //http数据传输过程分段，当浏览器发送大量数据时，会发多次请求。HttpObjectAggregator聚合多个分段。
+                            pipeline.addLast(new HttpObjectAggregator(8192));
+                            //WebSocketServerProtocolHandler将http协议升级为ws协议，保持长连接
+                            //js 请求uri ws://localhost:9500/chat
+                            pipeline.addLast(new WebSocketServerProtocolHandler("/chat"));
+                            //  pipeline.addLast(xx); //自定义handler处理业务逻辑
+                        }
+                    });*/
             System.out.println("netty server ok");
 //            绑定端口
 //           ChannelFuture channelFuture = serverBootstrap.bind(9500).sync();
@@ -60,6 +87,7 @@ public class NettyNioServer {
             e.printStackTrace();
         }finally {
             bossGroup.shutdownGracefully();
+            workerGroup.shutdownGracefully();
         }
     }
 }

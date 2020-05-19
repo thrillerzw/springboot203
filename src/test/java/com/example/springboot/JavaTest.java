@@ -1,20 +1,25 @@
 package com.example.springboot;
 
-import com.alibaba.fastjson.JSON;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class JavaTest {
 
     public static void main(String[] args) {
-        ArrayList<Object> list = new ArrayList<>();
+        /*ArrayList<Object> list = new ArrayList<>();
         list.add("1");
         list.add("2");
         list.add("3");
+        System.out.println(list.contains("5"));
         List<Object> subList = list.subList(0, 1);
         System.out.println(JSON.toJSON(subList));
-        testString();
+        testString();*/
+
+        Integer ia=new Integer(2);
+        Integer ib=new Integer(2);
+        if(ia.compareTo(ib)==0){
+            System.out.println(true);
+        }else {
+            System.out.println(false);
+        }
+
     }
 
     public static void testString(){
